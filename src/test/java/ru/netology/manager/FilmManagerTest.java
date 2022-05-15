@@ -1,50 +1,35 @@
 package ru.netology.manager;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.netology.dataClass.FilmItem;
+import ru.netology.repository.FilmRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class FilmManagerTest {
-
-    FilmManager manager = new FilmManager();
+    @Mock
+    FilmRepository repository;
+    FilmManager manager;
 
     FilmItem first = new FilmItem(1, "first", "first", "first");
-    FilmItem second = new FilmItem(2, "second","second","second");
-    FilmItem third = new FilmItem(3,"third", "third", "third");
+    FilmItem second = new FilmItem(2, "second", "second", "second");
+    FilmItem third = new FilmItem(3, "third", "third", "third");
     FilmItem fourth = new FilmItem(4, "fourth", "fourth", "fourth");
 
     @Test
     void getAll() {
-        manager.add(first);
+        FilmItem[] result = new FilmItem[]{first, second};
+        Mockito.doReturn(result).when(repository).findAll();
+
+        manager = new FilmManager(repository);
 
         FilmItem[] aclual = manager.getAll();
-        FilmItem[] expected = new FilmItem[]{first};
-
-        assertArrayEquals(aclual, expected);
-    }
-
-    @Test
-    void findLast() {
-        manager.add(first);
-        manager.add(second);
-        manager.add(third);
-
-        FilmItem[] aclual = manager.findLast();
-        FilmItem[] expected = new FilmItem[]{third, second, first};
-
-        assertArrayEquals(aclual, expected);
-    }
-
-    @Test
-    void findLastConstrector() {
-        FilmManager manager = new FilmManager(2);
-        manager.add(first);
-        manager.add(second);
-        manager.add(third);
-
-        FilmItem[] aclual = manager.findLast();
-        FilmItem[] expected = new FilmItem[]{third, second};
+        FilmItem[] expected = new FilmItem[]{first, second};
 
         assertArrayEquals(aclual, expected);
     }

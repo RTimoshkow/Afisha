@@ -12,6 +12,10 @@ public class FilmItem {
         this.name = name;
         this.genre = genre;
     }
+
+    public int getId() {
+        return id;
+    }
 }
 
 
